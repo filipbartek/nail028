@@ -65,8 +65,15 @@ void loop() {
     // go right
     left = 90;
     if (val_c) {
-      right = 0;
+      if (!dir) {
+        // forward
+        right = 90;
+      } else {
+        // right weak
+        right = 0;
+      }
     } else {
+      // right strong
       right = -90;
     }
   }
@@ -74,18 +81,26 @@ void loop() {
     // go left
     right = 90;
     if (val_c) {
-      left = 0;
+      if (dir) {
+        // forward
+        left = 90;
+      } else {
+        // left weak
+        left = 0;
+      }
     } else {
+      // left strong
       left = -90;
     }
   }
-  if (val_l && val_r && !val_c) {
+  if (val_l && val_r) {
+    // choose by `dir`
     if (dir) {
-      // turn right
+      // go right weak
       left = 90;
       right = 0;
     } else {
-      // turn left
+      // go left weak
       right = 90;
       left = 0;
     }
