@@ -45,10 +45,17 @@ void loop() {
   int val_l = digitalRead(sensor_l_pin);
   int val_r = digitalRead(sensor_r_pin);
   int val_c = digitalRead(sensor_c_pin);
-  long left = 90;
-  long right = 90;
+  // default: go back slowly
+  long left = -5;
+  long right = -5;
+  if (val_c && !val_l && !val_r) {
+    // go forward
+    left = 90;
+    right = 90;
+  }
   if (!val_l && val_r) {
     // go right
+    left = 90;
     if (val_c) {
       right = 0;
     } else {
@@ -57,6 +64,7 @@ void loop() {
   }
   if (!val_r && val_l) {
     // go left
+    right = 90;
     if (val_c) {
       left = 0;
     } else {
@@ -68,6 +76,6 @@ void loop() {
   Serial.print(right);
   Serial.println("");
   run(left, right);
-  delay(1);
+  //delay(1);
 }
 
