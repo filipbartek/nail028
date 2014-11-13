@@ -15,7 +15,7 @@ int sensor_c_pin = 9;
 // 1: light gets lost; black surface
 
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   servo_l.attach(13);
   servo_r.attach(12);
   servo_l.write(90);
@@ -67,10 +67,10 @@ void loop() {
       left = -90;
     }
   }
-  Serial.print(left);
-  Serial.print(" ");
-  Serial.print(right);
-  Serial.println("");
+  //Serial.print(left);
+  //Serial.print(" ");
+  //Serial.print(right);
+  //Serial.println("");
   run(left, right);
   //delay(1);
 }
