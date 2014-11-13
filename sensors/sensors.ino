@@ -20,6 +20,8 @@ boolean dir = true;
 // true: right
 // false: left
 
+int val_button_prev = 1;
+
 void setup() {
   //Serial.begin(9600);
   servo_l.attach(13);
@@ -95,6 +97,13 @@ void loop() {
   int val_button = digitalRead(button_pin);
   // 0: pressed
   // 1: released
+  
+  // Flip `dir` if button was pressed in this frame.
+  if (!val_button && val_button_prev) {
+    // The button was pressed just now
+    dir = !dir;
+  }
+  val_button_prev = val_button;
   
   //delay(1);
 }
