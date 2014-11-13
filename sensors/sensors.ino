@@ -4,10 +4,6 @@
 Servo servo_l; // 0: back, 180: forward
 Servo servo_r; // 180: back, 0: forward
 
-//int sensor = A0;
-// 0: light returns; white surface
-// 1023: light gets lost; black surface
-
 const int sensor_l_pin = 11;
 const int sensor_r_pin = 10;
 const int sensor_c_pin = 9;
