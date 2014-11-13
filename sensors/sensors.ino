@@ -14,6 +14,10 @@ const int sensor_c_pin = 9;
 // 0: light returns; white surface
 // 1: light gets lost; black surface
 
+boolean dir = true;
+// true: right
+// false: left
+
 void setup() {
   //Serial.begin(9600);
   servo_l.attach(13);
@@ -65,6 +69,17 @@ void loop() {
       left = 0;
     } else {
       left = -90;
+    }
+  }
+  if (val_l && val_r && !val_c) {
+    if (dir) {
+      // turn right
+      left = 90;
+      right = 0;
+    } else {
+      // turn left
+      right = 90;
+      left = 0;
     }
   }
   //Serial.print(left);
