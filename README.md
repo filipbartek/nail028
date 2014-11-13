@@ -25,9 +25,9 @@ on [Charles University](http://cuni.cz/) in Prague.
 
 #### 3
 Each sensor has three wires:
-* brown: ground
-* yellow: power (5V)
-* green or white: output
+* black or brown: ground
+* red or yellow: power (5V)
+* white or green: output
 
 ## Arduino
 * [Home page](http://arduino.cc/)
