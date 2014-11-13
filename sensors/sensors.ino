@@ -1,4 +1,5 @@
 #include <Servo.h>
+// Servo
 
 Servo servo_l; // 0: back, 180: forward
 Servo servo_r; // 180: back, 0: forward
@@ -56,11 +57,19 @@ void loop() {
   long right = 90;
   if (!val_l && val_r) {
     // go right
-    right = 0;
+    if (val_c) {
+      right = 0;
+    } else {
+      right = -90;
+    }
   }
   if (!val_r && val_l) {
     // go left
-    left = 0;
+    if (val_c) {
+      left = 0;
+    } else {
+      left = -90;
+    }
   }
   Serial.print(left);
   Serial.print(" ");
