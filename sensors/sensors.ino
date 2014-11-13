@@ -1,55 +1,7 @@
 #include <Servo.h>
-// Servo
+// Used in "Runner.h"
 
-class Runner {
-  private:
-  Servo servo_l; // 0: back, 180: forward
-  Servo servo_r; // 180: back, 0: forward
-  
-  public:
-  Runner(const int& servo_l_pin, const int& servo_r_pin) {
-    servo_l.attach(servo_l_pin);
-    servo_r.attach(servo_r_pin);
-    // Stop the servos
-    servo_l.write(90);
-    servo_r.write(90);
-  }
-  
-  // left, right:
-  // 0: stop
-  // 90: full forward
-  // -90: full back
-  void run(long left, long right) {
-    long power_l = map(left, -90, 90, 0, 180);
-    long power_r = map(right, -90, 90, 180, 0);
-    servo_l.write(power_l);
-    servo_r.write(power_r);
-  }
-  
-  void run_back() {
-    run(-5, -5);
-  }
-  
-  void run_forward() {
-    run(90, 90);
-  }
-  
-  void run_left_weak() {
-    run(0, 90);
-  }
-  
-  void run_left_strong() {
-    run(-90, 90);
-  }
-  
-  void run_right_weak() {
-    run(90, 0);
-  }
-  
-  void run_right_strong() {
-    run(90, -90);
-  }
-}
+#include "Runner.h"
 
 const int sensor_l_pin = 11;
 const int sensor_r_pin = 10;
