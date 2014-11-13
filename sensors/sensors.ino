@@ -42,14 +42,6 @@ void run(long left, long right) {
 }
 
 void loop() {
-//  int val = analogRead(sensor);
-//  Serial.print(val);
-//  int power = map(val, 0, 1023, 90, 104);
-//  Serial.print(" ");
-//  Serial.print(power);
-//  Serial.println("");
-//  servo_l.write(power);
-//  servo_r.write(power);
   int val_l = digitalRead(sensor_l_pin);
   int val_r = digitalRead(sensor_r_pin);
   int val_c = digitalRead(sensor_c_pin);
