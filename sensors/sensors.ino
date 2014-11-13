@@ -33,10 +33,6 @@ void setup() {
 void run(long left, long right) {
   long power_l = map(left, -90, 90, 0, 180);
   long power_r = map(right, -90, 90, 180, 0);
-  Serial.print("power_l: ");
-  Serial.println(power_l);
-  Serial.print("power_r: ");
-  Serial.println(power_r);
   servo_l.write(power_l);
   servo_r.write(power_r);
 }
