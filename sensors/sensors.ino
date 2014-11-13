@@ -23,7 +23,9 @@ boolean dir = true;
 int val_button_prev = 1;
 
 void setup() {
-  //Serial.begin(9600);
+  // Initialize debug output channel
+  Serial.begin(9600);
+  
   servo_l.attach(13);
   servo_r.attach(12);
   servo_l.write(90);
@@ -104,6 +106,8 @@ void loop() {
     dir = !dir;
   }
   val_button_prev = val_button;
+  
+  Serial.println(dir);
   
   //delay(1);
 }
