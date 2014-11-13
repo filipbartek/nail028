@@ -8,9 +8,9 @@ Servo servo_r; // 180: back, 0: forward
 // 0: light returns; white surface
 // 1023: light gets lost; black surface
 
-int sensor_l_pin = 11;
-int sensor_r_pin = 10;
-int sensor_c_pin = 9;
+const int sensor_l_pin = 11;
+const int sensor_r_pin = 10;
+const int sensor_c_pin = 9;
 // 0: light returns; white surface
 // 1: light gets lost; black surface
 
