@@ -14,6 +14,8 @@ const int sensor_c_pin = 9;
 // 0: light returns; white surface
 // 1: light gets lost; black surface
 
+const int button_pin = 8;
+
 boolean dir = true;
 // true: right
 // false: left
@@ -28,6 +30,8 @@ void setup() {
   pinMode(sensor_l_pin, INPUT);
   pinMode(sensor_r_pin, INPUT);
   pinMode(sensor_c_pin, INPUT);
+  
+  pinMode(button_pin, INPUT_PULLUP);
 }
 
 // left, right:
@@ -87,6 +91,11 @@ void loop() {
   //Serial.print(right);
   //Serial.println("");
   run(left, right);
+  
+  int val_button = digitalRead(button_pin);
+  // 0: pressed
+  // 1: released
+  
   //delay(1);
 }
 
