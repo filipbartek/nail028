@@ -46,9 +46,9 @@ void run(long left, long right) {
 }
 
 void loop() {
-  int val_l = digitalRead(sensor_l_pin);
-  int val_r = digitalRead(sensor_r_pin);
-  int val_c = digitalRead(sensor_c_pin);
+  const int val_l = digitalRead(sensor_l_pin);
+  const int val_r = digitalRead(sensor_r_pin);
+  const int val_c = digitalRead(sensor_c_pin);
   // default: go back slowly
   long left = -5;
   long right = -5;
