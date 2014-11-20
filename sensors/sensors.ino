@@ -101,10 +101,6 @@ void loop() {
       left = 0;
     }
   }
-  //Serial.print(left);
-  //Serial.print(" ");
-  //Serial.print(right);
-  //Serial.println("");
   run(left, right);
   
   int val_button = digitalRead(button_pin);
