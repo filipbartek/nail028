@@ -115,7 +115,5 @@ void loop() {
   val_button_prev = val_button;
   
   Serial.println(dir);
-  
-  //delay(1);
 }
 
