@@ -41,6 +41,8 @@ void setup() {
   pinMode(sensor_l_pin, INPUT);
   pinMode(sensor_r_pin, INPUT);
   pinMode(sensor_c_pin, INPUT);
+  pinMode(sensor_ll_pin, INPUT);
+  pinMode(sensor_rr_pin, INPUT);
   
   pinMode(button_pin, INPUT_PULLUP);
 }
