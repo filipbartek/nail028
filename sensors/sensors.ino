@@ -63,6 +63,7 @@ void run(long left, long right) {
 }
 
 void loop() {
+  // 1 iff the sensor detects a line
   const int val_l = digitalRead(sensor_l_pin);
   const int val_r = digitalRead(sensor_r_pin);
   const int val_c = digitalRead(sensor_c_pin);
