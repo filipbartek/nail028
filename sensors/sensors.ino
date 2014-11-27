@@ -70,6 +70,17 @@ void loop() {
   const int val_ll = digitalRead(sensor_ll_pin);
   const int val_rr = digitalRead(sensor_rr_pin);
   
+  Serial.print("ll: ");
+  Serial.println(val_ll);
+  Serial.print("l:  ");
+  Serial.println(val_l);
+  Serial.print("c:  ");
+  Serial.println(val_c);
+  Serial.print("r:  ");
+  Serial.println(val_r);
+  Serial.print("rr: ");
+  Serial.println(val_rr);
+  
   const boolean turn_l = val_ll && !val_rr;
   const boolean turn_r = val_rr && !val_ll;
   
