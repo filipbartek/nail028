@@ -1,9 +1,8 @@
 #include <Servo.h>
-// Servo
+// Used in Runner.h
 
-Servo servo_l; // 0: back, 180: forward
-Servo servo_r; // 180: back, 0: forward
- 
+#include "Runner.h"
+
 // sensors: 7 11 9 10 8
 // button: 6
 
@@ -33,14 +32,16 @@ int val_button_prev = 1;
 boolean turn_l_prev = false;
 boolean turn_r_prev = false;
 
+Runner runner;
+
 void setup() {
   // Initialize debug output channel
   Serial.begin(9600);
   
-  servo_l.attach(13);
-  servo_r.attach(12);
-  servo_l.write(90);
-  servo_r.write(90);
+  runner.init(13, 12);
+  // Left servo (13): 0: back, 180: forward
+  // Right servo (12): 180: back, 0: forward
+  runner.run(0, 0);
   
   pinMode(sensor_l_pin, INPUT);
   pinMode(sensor_r_pin, INPUT);
@@ -49,17 +50,6 @@ void setup() {
   pinMode(sensor_rr_pin, INPUT);
   
   pinMode(button_pin, INPUT_PULLUP);
-}
-
-// left, right:
-// 0: stop
-// 90: full forward
-// -90: full back
-void run(long left, long right) {
-  long power_l = map(left, -90, 90, 0, 180);
-  long power_r = map(right, -90, 90, 180, 0);
-  servo_l.write(power_l);
-  servo_r.write(power_r);
 }
 
 void loop() {
@@ -111,7 +101,7 @@ void loop() {
   
   if (val_ll && val_rr && !wait_for_button) {
     wait_for_button = true;
-    run(0, 0);
+    runner.run(0, 0);
   }
   
   if (wait_for_button) {
@@ -183,7 +173,7 @@ void loop() {
         left = 0;
       }
     }
-    run(left, right);
+    runner.run(left, right);
   }
   
   Serial.println(dir);
