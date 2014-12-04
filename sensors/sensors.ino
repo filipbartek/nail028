@@ -1,14 +1,24 @@
 #include <Servo.h>
 // Used in Runner.h
 
+#include "Behavior.h"
 #include "Runner.h"
 
+// Misa:
 // sensors: 7 11 9 10 8
 // button: 6
 
 // Marketka:
 // sensors: 8 11 9 10 7
 // button: 6
+
+struct SensorPins {
+  int ll;
+  int l;
+  int c;
+  int r;
+  int rr;
+};
 
 const int sensor_l_pin = 11;
 const int sensor_r_pin = 10;
@@ -17,6 +27,8 @@ const int sensor_ll_pin = 8;
 const int sensor_rr_pin = 7;
 // 0: light returns; white surface
 // 1: light gets lost; black surface
+
+SensorPins sensor_pins;
 
 const int button_pin = 6;
 
@@ -43,139 +55,68 @@ void setup() {
   // Right servo (12): 180: back, 0: forward
   runner.run(0, 0);
   
-  pinMode(sensor_l_pin, INPUT);
-  pinMode(sensor_r_pin, INPUT);
-  pinMode(sensor_c_pin, INPUT);
-  pinMode(sensor_ll_pin, INPUT);
-  pinMode(sensor_rr_pin, INPUT);
-  
   pinMode(button_pin, INPUT_PULLUP);
+  
+  sensor_pins.l = 11;
+  sensor_pins.r = 10;
+  sensor_pins.c = 9;
+  sensor_pins.ll = 7;
+  sensor_pins.rr = 8;
+  
+  pinMode(sensor_pins.l, INPUT);
+  pinMode(sensor_pins.r, INPUT);
+  pinMode(sensor_pins.c, INPUT);
+  pinMode(sensor_pins.ll, INPUT);
+  pinMode(sensor_pins.rr, INPUT);
 }
 
+enum FollowMode { CENTER, LEFT, RIGHT };
+FollowMode follow_mode = CENTER;
+
+BehaviorFollowCenter behavior_follow_center(runner);
+BehaviorFollowLeft behavior_follow_left(runner);
+BehaviorFollowRight behavior_follow_right(runner);
+Behavior * behavior = &behavior_follow_center;
+
+boolean turn_left_prev = false;
+boolean turn_right_prev = false;
+
+const unsigned long delay_center = 1000;
+unsigned long time_center = 0;
+
 void loop() {
-  // 1 iff the sensor detects a line
-  const int val_l = digitalRead(sensor_l_pin);
-  const int val_r = digitalRead(sensor_r_pin);
-  const int val_c = digitalRead(sensor_c_pin);
-  const int val_ll = digitalRead(sensor_ll_pin);
-  const int val_rr = digitalRead(sensor_rr_pin);
+  const int val_ll = digitalRead(sensor_pins.ll);
+  const int val_rr = digitalRead(sensor_pins.rr);
   
-  Serial.print("ll: ");
-  Serial.println(val_ll);
-  Serial.print("l:  ");
-  Serial.println(val_l);
-  Serial.print("c:  ");
-  Serial.println(val_c);
-  Serial.print("r:  ");
-  Serial.println(val_r);
-  Serial.print("rr: ");
-  Serial.println(val_rr);
-  
-  const boolean turn_l = val_ll && !val_rr;
-  const boolean turn_r = val_rr && !val_ll;
-  
-  if (turn_l && !turn_l_prev) {
-    // TODO: Consider considering dir here.
-    if (after_junction) {
-      after_junction = false;
-    } else {
-      dir = false;
-      after_junction = true;
-    }
+  if (val_ll && !val_rr && follow_mode == CENTER) {
+    follow_mode = LEFT;
+    time_center = millis() + delay_center;
+  }
+  if (val_rr && !val_ll && follow_mode == CENTER) {
+    follow_mode = RIGHT;
+    time_center = millis() + delay_center;
   }
   
-  if (turn_r && !turn_r_prev) {
-    if (after_junction) {
-      after_junction = false;
-    } else {
-      dir = true;
-      after_junction = true;
-    }
+  if (time_center != 0 && millis() > time_center) {
+    follow_mode = CENTER;
+    time_center = 0;
   }
   
-  turn_l_prev = turn_l;
-  turn_r_prev = turn_r;
-  
-  // TODO: Implement dir oblivious mode for period after `after_junction` is set to false.
-  // (?)
-  
-  if (val_ll && val_rr && !wait_for_button) {
-    wait_for_button = true;
-    runner.run(0, 0);
+  switch (follow_mode) {
+    case CENTER:
+      behavior = &behavior_follow_center;
+      break;
+    case LEFT:
+      behavior = &behavior_follow_left;
+      break;
+    case RIGHT:
+      behavior = &behavior_follow_right;
+      break;
   }
-  
-  if (wait_for_button) {
-    // Wait
-    
-    const int val_button = digitalRead(button_pin);
-    // 0: pressed
-    // 1: released
-    
-    if (!val_button) {
-      // Button pressed
-      // Wait is over
-      wait_for_button = false;
-      after_junction = false;
-      // TODO: Add timeout
-    }
-  }
-  if (!wait_for_button) {
-    // Run
-    // default: go back slowly
-    long left = -5;
-    long right = -5;
-    if (val_c && !val_l && !val_r) {
-      // go forward
-      left = 90;
-      right = 90;
-    }
-    if (!val_l && val_r) {
-      // go right
-      left = 90;
-      if (val_c) {
-        if (!dir) {
-          // forward
-          right = 90;
-        } else {
-          // right weak
-          right = 0;
-        }
-      } else {
-        // right strong
-        right = -90;
-      }
-    }
-    if (!val_r && val_l) {
-      // go left
-      right = 90;
-      if (val_c) {
-        if (dir) {
-          // forward
-          left = 90;
-        } else {
-          // left weak
-          left = 0;
-        }
-      } else {
-        // left strong
-        left = -90;
-      }
-    }
-    if (val_l && val_r) {
-      // choose by `dir`
-      if (dir) {
-        // go right weak
-        left = 90;
-        right = 0;
-      } else {
-        // go left weak
-        right = 90;
-        left = 0;
-      }
-    }
-    runner.run(left, right);
-  }
-  
-  Serial.println(dir);
+
+  const int val_l = digitalRead(sensor_pins.l);
+  const int val_c = digitalRead(sensor_pins.c);
+  const int val_r = digitalRead(sensor_pins.r);
+  behavior->tick(val_l, val_c, val_r);
 }
 
