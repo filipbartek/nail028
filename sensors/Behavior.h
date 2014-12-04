@@ -1,3 +1,6 @@
+#ifndef BEHAVIOR_H
+#define BEHAVIOR_H
+
 #include "Runner.h"
 
 struct SensorPins {
@@ -30,4 +33,6 @@ class BehaviorFollowLine: public Behavior {
     const int val_r = digitalRead(sensor_pins.r);
   }
 };
+
+#endif // BEHAVIOR_H
 

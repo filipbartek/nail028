@@ -1,3 +1,6 @@
+#ifndef RUNNER_H
+#define RUNNER_H
+
 #include <Arduino.h>
 
 #include <Servo.h>
@@ -24,4 +27,6 @@ public:
     servo_r.write(power_r);
   }
 };
+
+#endif // RUNNER_H
 
