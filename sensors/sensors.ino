@@ -79,13 +79,14 @@ void setup() {
   digitalWrite(diod_r, HIGH);
 }
 
-enum FollowMode { CENTER, LEFT, RIGHT };
-FollowMode follow_mode = CENTER;
+enum FollowMode { WAIT, CENTER, LEFT, RIGHT };
+FollowMode follow_mode = WAIT;
 
+BehaviorNull behavior_null(runner);
 BehaviorFollowCenter behavior_follow_center(runner);
 BehaviorFollowLeft behavior_follow_left(runner);
 BehaviorFollowRight behavior_follow_right(runner);
-Behavior * behavior = &behavior_follow_center;
+Behavior * behavior = &behavior_null;
 
 boolean turn_left_prev = false;
 boolean turn_right_prev = false;
@@ -100,7 +101,19 @@ void loop() {
   const boolean ll_black = val_ll == 0;
   const boolean rr_black = val_rr == 0;
   
+  const int val_button = digitalRead(button_pin);
+  // 0: pressed
+  // 1: released
+  
+  const boolean button_pressed = val_button == 0;
+  
   unsigned long time = millis();
+  
+  if (follow_mode == WAIT && button_pressed) {
+    follow_mode = CENTER;
+    digitalWrite(diod_l, HIGH);
+    digitalWrite(diod_r, HIGH);
+  }
   
   if (ll_black && !rr_black && follow_mode == CENTER) {
     follow_mode = LEFT;
@@ -123,6 +136,9 @@ void loop() {
   }
   
   switch (follow_mode) {
+    case WAIT:
+      behavior = &behavior_null;
+      break;
     case CENTER:
       behavior = &behavior_follow_center;
       break;
