@@ -30,7 +30,7 @@ struct SensorPins {
 
 SensorPins sensor_pins;
 
-const int button_pin = 6;
+const int button_pin = 8;
 
 // Mode:
 boolean wait_for_button = true;
@@ -57,11 +57,11 @@ void setup() {
   
   pinMode(button_pin, INPUT_PULLUP);
   
-  sensor_pins.l = 11;
-  sensor_pins.r = 10;
-  sensor_pins.c = 9;
-  sensor_pins.ll = 7;
-  sensor_pins.rr = 8;
+  sensor_pins.ll = 3;
+  sensor_pins.l = 4;
+  sensor_pins.c = 5;
+  sensor_pins.r = 6;
+  sensor_pins.rr = 7;
   
   pinMode(sensor_pins.l, INPUT);
   pinMode(sensor_pins.r, INPUT);
