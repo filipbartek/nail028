@@ -12,6 +12,11 @@
 // sensors: 8 11 9 10 7
 // button: 6
 
+// Paulie:
+// sensors: 3 4 5 6 7
+// button: 8
+// diods: 9 10
+
 struct SensorPins {
   int ll;
   int l;
