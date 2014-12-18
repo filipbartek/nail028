@@ -88,11 +88,14 @@ void loop() {
   const int val_ll = digitalRead(sensor_pins.ll);
   const int val_rr = digitalRead(sensor_pins.rr);
   
-  if (val_ll && !val_rr && follow_mode == CENTER) {
+  const boolean ll_black = val_ll == 0;
+  const boolean rr_black = val_rr == 0;
+  
+  if (ll_black && !rr_black && follow_mode == CENTER) {
     follow_mode = LEFT;
     time_center = millis() + delay_center;
   }
-  if (val_rr && !val_ll && follow_mode == CENTER) {
+  if (rr_black && !ll_black && follow_mode == CENTER) {
     follow_mode = RIGHT;
     time_center = millis() + delay_center;
   }
