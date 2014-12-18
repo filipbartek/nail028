@@ -28,6 +28,9 @@ struct SensorPins {
 // 0: light returns; white surface
 // 1: light gets lost; black surface
 
+const int diod_l = 10;
+const int diod_r = 9;
+
 SensorPins sensor_pins;
 
 const int button_pin = 8;
@@ -68,6 +71,12 @@ void setup() {
   pinMode(sensor_pins.c, INPUT);
   pinMode(sensor_pins.r, INPUT);
   pinMode(sensor_pins.rr, INPUT);
+  
+  pinMode(diod_l, OUTPUT);
+  pinMode(diod_r, OUTPUT);
+
+  digitalWrite(diod_l, HIGH);
+  digitalWrite(diod_r, HIGH);
 }
 
 enum FollowMode { CENTER, LEFT, RIGHT };
@@ -95,15 +104,21 @@ void loop() {
   
   if (ll_black && !rr_black && follow_mode == CENTER) {
     follow_mode = LEFT;
+    digitalWrite(diod_l, HIGH);
+    digitalWrite(diod_r, LOW);
     time_center = time + delay_center;
   }
   if (rr_black && !ll_black && follow_mode == CENTER) {
     follow_mode = RIGHT;
+    digitalWrite(diod_r, HIGH);
+    digitalWrite(diod_l, LOW);
     time_center = time + delay_center;
   }
   
   if (time_center != 0 && time > time_center) {
     follow_mode = CENTER;
+    digitalWrite(diod_l, HIGH);
+    digitalWrite(diod_r, HIGH);
     time_center = 0;
   }
   
