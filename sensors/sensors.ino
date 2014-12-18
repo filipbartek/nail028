@@ -25,11 +25,6 @@ struct SensorPins {
   int rr;
 };
 
-const int sensor_l_pin = 11;
-const int sensor_r_pin = 10;
-const int sensor_c_pin = 9;
-const int sensor_ll_pin = 8;
-const int sensor_rr_pin = 7;
 // 0: light returns; white surface
 // 1: light gets lost; black surface
 
