@@ -91,16 +91,18 @@ void loop() {
   const boolean ll_black = val_ll == 0;
   const boolean rr_black = val_rr == 0;
   
+  unsigned long time = millis();
+  
   if (ll_black && !rr_black && follow_mode == CENTER) {
     follow_mode = LEFT;
-    time_center = millis() + delay_center;
+    time_center = time + delay_center;
   }
   if (rr_black && !ll_black && follow_mode == CENTER) {
     follow_mode = RIGHT;
-    time_center = millis() + delay_center;
+    time_center = time + delay_center;
   }
   
-  if (time_center != 0 && millis() > time_center) {
+  if (time_center != 0 && time > time_center) {
     follow_mode = CENTER;
     time_center = 0;
   }
