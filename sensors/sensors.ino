@@ -63,10 +63,10 @@ void setup() {
   sensor_pins.r = 6;
   sensor_pins.rr = 7;
   
-  pinMode(sensor_pins.l, INPUT);
-  pinMode(sensor_pins.r, INPUT);
-  pinMode(sensor_pins.c, INPUT);
   pinMode(sensor_pins.ll, INPUT);
+  pinMode(sensor_pins.l, INPUT);
+  pinMode(sensor_pins.c, INPUT);
+  pinMode(sensor_pins.r, INPUT);
   pinMode(sensor_pins.rr, INPUT);
 }
 
