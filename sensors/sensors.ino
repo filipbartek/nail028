@@ -117,6 +117,11 @@ void loop() {
   const int val_l = digitalRead(sensor_pins.l);
   const int val_c = digitalRead(sensor_pins.c);
   const int val_r = digitalRead(sensor_pins.r);
-  behavior->tick(val_l, val_c, val_r);
+  
+  const boolean l_black = val_l == 0;
+  const boolean c_black = val_c == 0;
+  const boolean r_black = val_r == 0;
+  
+  behavior->tick(l_black, c_black, r_black);
 }
 
