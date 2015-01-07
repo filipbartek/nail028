@@ -29,7 +29,7 @@ void setup() {
 void loop() {
   const unsigned long time = millis();
   
-  // Set mode_follow
+  // Update mode_follow
   if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
     mode_follow = FOLLOW_LEFT;
     follow_center_time = time + follow_delay;
@@ -42,15 +42,17 @@ void loop() {
     mode_follow = FOLLOW_CENTER;
   }
   
-  // Set move mode
+  // Register button press
   if (mode == WAIT && body.button_pressed()) {
     mode = FORWARD;
   }
   
+  // Shorten names of sensor states
   const boolean l = body.sensor_l();
   const boolean c = body.sensor_c();
   const boolean r = body.sensor_r();
   
+  // Works like magic!
   if (mode != WAIT) {
     if (l) {
       // May change to turning left
@@ -111,6 +113,7 @@ void loop() {
       break;
   }
   
+  // Indicate follow mode using diods
   if (mode != WAIT) {
     switch (mode_follow) {
       case FOLLOW_CENTER:
