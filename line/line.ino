@@ -13,7 +13,7 @@ Mode mode = WAIT;
 
 enum ModeFollow { FOLLOW_CENTER, FOLLOW_LEFT, FOLLOW_RIGHT };
 ModeFollow mode_follow = FOLLOW_CENTER;
-const unsigned long follow_delay = 2000;
+const unsigned long follow_delay = 1000;
 unsigned long follow_center_time = 0;
 
 Body body;
