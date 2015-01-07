@@ -52,26 +52,33 @@ void loop() {
   const boolean r = body.sensor_r();
   
   if (mode != WAIT) {
-    if (l && mode_follow == FOLLOW_LEFT) {
-      mode = LEFT;
+    if (l) {
+      // May change to turning left
+      if (!r && !c) {
+        mode = LEFT_STRONG;
+      } else if (mode_follow == FOLLOW_LEFT) {
+        mode = LEFT;
+      }
     }
-    if (r && mode_follow == FOLLOW_RIGHT) {
-      mode = RIGHT;
+    if (r) {
+      // May change to turning right
+      if (!l && !c) {
+        mode = RIGHT_STRONG;
+      } else if (mode_follow == FOLLOW_RIGHT) {
+        mode = RIGHT;
+      }
     }
-    if (c && !l && !r) {
-      mode = FORWARD;
-    }
-    if (l && !r && !c) {
-      mode = LEFT_STRONG;
-    }
-    if (r && !l && !c) {
-      mode = RIGHT_STRONG;
-    }
-    if (c && l && !r && mode_follow == FOLLOW_RIGHT) {
-      mode = FORWARD;
-    }
-    if (c && r && !l && mode_follow == FOLLOW_LEFT) {
-      mode = FORWARD;
+    if (c) {
+      // May change to going straight ahead
+      if (!l && !r) {
+        mode = FORWARD;
+      }
+      if (l && !r && mode_follow == FOLLOW_RIGHT) {
+        mode = FORWARD;
+      }
+      if (r && !l && mode_follow == FOLLOW_LEFT) {
+        mode = FORWARD;
+      }
     }
   }
   
