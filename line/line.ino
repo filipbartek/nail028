@@ -7,6 +7,7 @@
 // Configuration
 const Pins pins_paulie = {{3, 4, 5, 6, 7}, 8, {13, 12}, {10, 9}};
 const Pins& pins = pins_paulie;
+const long velocity = 90;
 
 enum Mode { WAIT, FORWARD, LEFT, RIGHT, LEFT_STRONG, RIGHT_STRONG };
 Mode mode = WAIT;
@@ -77,23 +78,23 @@ void loop() {
       break;
     case FORWARD:
       Serial.println("FORWARD");
-      body.run(90, 90);
+      body.run(velocity, velocity);
       break;
     case LEFT:
       Serial.println("LEFT");
-      body.run(0, 90);
+      body.run(0, velocity);
       break;
     case RIGHT:
       Serial.println("RIGHT");
-      body.run(90, 0);
+      body.run(velocity, 0);
       break;
     case LEFT_STRONG:
       Serial.println("LEFT_STRONG");
-      body.run(-90, 90);
+      body.run(-velocity, velocity);
       break;
     case RIGHT_STRONG:
       Serial.println("RIGHT_STRONG");
-      body.run(90, -90);
+      body.run(velocity, -velocity);
       break;
   }
   
