@@ -57,3 +57,13 @@ boolean
 Body::sensor_r() {
   return digitalRead(pins.sensor.r) == 0;
 }
+
+boolean
+Body::sensor_ll() {
+  return digitalRead(pins.sensor.ll) == 0;
+}
+
+boolean
+Body::sensor_rr() {
+  return digitalRead(pins.sensor.rr) == 0;
+}

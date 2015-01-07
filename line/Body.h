@@ -18,6 +18,8 @@ public:
   boolean sensor_l();
   boolean sensor_c();
   boolean sensor_r();
+  boolean sensor_ll();
+  boolean sensor_rr();
 private:
   Pins pins;
   Runner runner;
