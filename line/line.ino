@@ -11,6 +11,11 @@ const Pins& pins = pins_paulie;
 enum Mode { WAIT, FORWARD, LEFT, RIGHT, LEFT_STRONG, RIGHT_STRONG };
 Mode mode = WAIT;
 
+enum ModeFollow { FOLLOW_CENTER, FOLLOW_LEFT, FOLLOW_RIGHT };
+ModeFollow mode_follow = FOLLOW_CENTER;
+const unsigned long follow_delay = 2000;
+unsigned long follow_center_time = 0;
+
 Body body;
 
 void setup() {
@@ -21,27 +26,46 @@ void setup() {
 }
 
 void loop() {
-  // Set mode  
-  if (mode == WAIT && body.button_pressed()) {
-    mode = FORWARD;
+  const unsigned long time = millis();
+  
+  // Set mode_follow
+  if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
+    mode_follow = FOLLOW_LEFT;
+    follow_center_time = time + follow_delay;
+  }
+  if (body.sensor_rr() && !body.sensor_ll() && mode_follow == FOLLOW_CENTER) {
+    mode_follow = FOLLOW_RIGHT;
+    follow_center_time = time + follow_delay;
+  }
+  if (time >= follow_center_time) {
+    mode_follow = FOLLOW_CENTER;
   }
   
-  if (mode != WAIT) {
+  // Set move mode
+  const boolean l = body.sensor_l();
+  const boolean c = body.sensor_c();
+  const boolean r = body.sensor_r();
+  
+  if (l && mode_follow == FOLLOW_LEFT) {
+    mode = LEFT;
+  }
+  if (r && mode_follow == FOLLOW_RIGHT) {
+    mode = RIGHT;
+  }
+  if (c && !l && !r) {
     mode = FORWARD;
-    if (body.sensor_l() && !body.sensor_r()) {
-      if (body.sensor_c()) {
-        mode = LEFT;
-      } else {
-        mode = LEFT_STRONG;
-      }
-    }
-    if (body.sensor_r() && !body.sensor_l()) {
-      if (body.sensor_c()) {
-        mode = RIGHT;
-      } else {
-        mode = RIGHT_STRONG;
-      }
-    }
+  }
+  if (l && !r && !c) {
+    mode = LEFT_STRONG;
+  }
+  if (r && !l && !c) {
+    mode = RIGHT_STRONG;
+  }
+  if (c && l && !r && mode_follow == FOLLOW_RIGHT) {
+    mode = FORWARD;
+  }
+  if (c && r && !l && mode_follow == FOLLOW_LEFT) {
+    mode = FORWARD;
   }
   
   // Execute mode
@@ -54,27 +78,36 @@ void loop() {
     case FORWARD:
       Serial.println("FORWARD");
       body.run(90, 90);
-      body.light(false, false);
       break;
     case LEFT:
       Serial.println("LEFT");
       body.run(0, 90);
-      body.light(true, false);
       break;
     case RIGHT:
       Serial.println("RIGHT");
       body.run(90, 0);
-      body.light(false, true);
       break;
     case LEFT_STRONG:
       Serial.println("LEFT_STRONG");
       body.run(-90, 90);
-      body.light(true, false);
       break;
     case RIGHT_STRONG:
       Serial.println("RIGHT_STRONG");
       body.run(90, -90);
-      body.light(false, true);
       break;
+  }
+  
+  if (mode != WAIT) {
+    switch (mode_follow) {
+      case FOLLOW_CENTER:
+        body.light(false, false);
+        break;
+      case FOLLOW_LEFT:
+        body.light(true, false);
+        break;
+      case FOLLOW_RIGHT:
+        body.light(false, true);
+        break;
+    }
   }
 }
