@@ -43,30 +43,36 @@ void loop() {
   }
   
   // Set move mode
+  if (mode == WAIT && body.button_pressed()) {
+    mode = FORWARD;
+  }
+  
   const boolean l = body.sensor_l();
   const boolean c = body.sensor_c();
   const boolean r = body.sensor_r();
   
-  if (l && mode_follow == FOLLOW_LEFT) {
-    mode = LEFT;
-  }
-  if (r && mode_follow == FOLLOW_RIGHT) {
-    mode = RIGHT;
-  }
-  if (c && !l && !r) {
-    mode = FORWARD;
-  }
-  if (l && !r && !c) {
-    mode = LEFT_STRONG;
-  }
-  if (r && !l && !c) {
-    mode = RIGHT_STRONG;
-  }
-  if (c && l && !r && mode_follow == FOLLOW_RIGHT) {
-    mode = FORWARD;
-  }
-  if (c && r && !l && mode_follow == FOLLOW_LEFT) {
-    mode = FORWARD;
+  if (mode != WAIT) {
+    if (l && mode_follow == FOLLOW_LEFT) {
+      mode = LEFT;
+    }
+    if (r && mode_follow == FOLLOW_RIGHT) {
+      mode = RIGHT;
+    }
+    if (c && !l && !r) {
+      mode = FORWARD;
+    }
+    if (l && !r && !c) {
+      mode = LEFT_STRONG;
+    }
+    if (r && !l && !c) {
+      mode = RIGHT_STRONG;
+    }
+    if (c && l && !r && mode_follow == FOLLOW_RIGHT) {
+      mode = FORWARD;
+    }
+    if (c && r && !l && mode_follow == FOLLOW_LEFT) {
+      mode = FORWARD;
+    }
   }
   
   // Execute mode
