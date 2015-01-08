@@ -11,7 +11,7 @@ update_mode(Mode& mode, const ModeFollow& mode_follow, const Body& body) {
     if (l) {
       // May change to turning left
       if (!r && !c) {
-        mode = LEFT_STRONG;
+        mode = LEFT;
       } else if (mode_follow == FOLLOW_LEFT) {
         mode = LEFT;
       }
@@ -19,7 +19,7 @@ update_mode(Mode& mode, const ModeFollow& mode_follow, const Body& body) {
     if (r) {
       // May change to turning right
       if (!l && !c) {
-        mode = RIGHT_STRONG;
+        mode = RIGHT;
       } else if (mode_follow == FOLLOW_RIGHT) {
         mode = RIGHT;
       }
@@ -34,6 +34,14 @@ update_mode(Mode& mode, const ModeFollow& mode_follow, const Body& body) {
       }
       if (r && !l && mode_follow == FOLLOW_LEFT) {
         mode = FORWARD;
+      }
+    }
+    if (!l && !c && !r) {
+      if (mode == LEFT) {
+        mode = LEFT_STRONG;
+      }
+      if (mode == RIGHT) {
+        mode = RIGHT_STRONG;
       }
     }
   }
