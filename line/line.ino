@@ -43,7 +43,7 @@ void loop() {
   // Process marks (sensors ll and rr)
   
   // Starting behavior
-  if (body.sensor_ll() && body.sensor_rr() && !body.sensor_l() && !body.sensor_r() && body.sensor_c()) {
+  if (body.sensor_ll() && body.sensor_rr() && (body.sensor_l() + body.sensor_r() + body.sensor_c()) == 1) {
     if (!start_mark) {
       // We've just reached the start mark
       // (Only executed once in each lap)
