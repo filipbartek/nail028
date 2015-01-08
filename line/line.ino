@@ -11,6 +11,7 @@
 // Pins: {sensor[5], button, servo[2], diod[2]}
 const Pins pins_paulie = {{3, 4, 5, 6, 7}, 8, {13, 12}, {10, 9}};
 const Pins& pins = pins_paulie;
+
 const long velocity = 90;
 
 // Mode of movement - low level
