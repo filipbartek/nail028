@@ -30,7 +30,7 @@ void setup() {
 void loop() {
   const unsigned long time = millis();
   
-  // Update mode_follow
+  // Process marks (sensors ll and rr)
   if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
     mode_follow = FOLLOW_LEFT;
     follow_center_time = time + follow_delay;
