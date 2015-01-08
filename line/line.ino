@@ -61,6 +61,9 @@ void loop() {
   // Register button press
   if (mode == WAIT && body.button_pressed()) {
     mode = FORWARD;
+    if (start_mark) {
+      starting = false;
+    }
   }
   
   // Shorten names of sensor states
