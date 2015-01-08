@@ -106,11 +106,11 @@ void loop() {
       break;
     case LEFT_STRONG:
       Serial.println("LEFT_STRONG");
-      body.run(-velocity, velocity);
+      body.run(-5, velocity);
       break;
     case RIGHT_STRONG:
       Serial.println("RIGHT_STRONG");
-      body.run(velocity, -velocity);
+      body.run(velocity, -5);
       break;
   }
   
