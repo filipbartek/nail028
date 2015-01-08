@@ -20,6 +20,9 @@ unsigned long follow_center_time = 0;
 
 Body body;
 
+boolean starting = true; // Wait for button press once we reach starting line
+boolean start_mark = false; // We're on the starting line right now
+
 void setup() {
   Serial.begin(9600);
   
@@ -31,6 +34,17 @@ void loop() {
   const unsigned long time = millis();
   
   // Process marks (sensors ll and rr)
+  if (body.sensor_ll() && body.sensor_rr()) {
+    if (!start_mark) {
+      // We've just reached the start mark
+      start_mark = true;
+      if (starting) {
+        mode = WAIT;
+      }
+    }
+  } else {
+    start_mark = false;
+  }
   if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
     mode_follow = FOLLOW_LEFT;
     follow_center_time = time + follow_delay;
