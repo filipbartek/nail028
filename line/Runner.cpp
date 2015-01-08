@@ -13,7 +13,4 @@ void
 Runner::run(const long& l, const long& r) {
   servo_l.write(map(l, -90, 90, 0, 180));
   servo_r.write(map(r, -90, 90, 180, 0));
-  Serial.print(l);
-  Serial.print(" ");
-  Serial.println(r);
 }
