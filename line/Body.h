@@ -7,11 +7,15 @@
 #include "Pins.h"
 #include "Runner.h"
 
+// Represents body of the robot - sensors and actuators
 class Body {
 public:
   void init(const Pins& pins);
+  
   void run(const long& l, const long& r);
   void light(const boolean& l, const boolean& r);
+  
+  // Returns true iff button is pressed
   boolean button_pressed();
   
   // Return true iff sensor detects a line

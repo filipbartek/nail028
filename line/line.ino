@@ -1,4 +1,5 @@
 #include <limits.h>
+// ULONG_MAX
 
 #include <Servo.h>
 // Used in Body / Runner
@@ -12,9 +13,12 @@ const Pins pins_paulie = {{3, 4, 5, 6, 7}, 8, {13, 12}, {10, 9}};
 const Pins& pins = pins_paulie;
 const long velocity = 90;
 
+// Mode of movement - low level
 enum Mode { WAIT, FORWARD, LEFT, RIGHT, LEFT_STRONG, RIGHT_STRONG };
+// WAIT: Wait for button press
 Mode mode = WAIT;
 
+// Mode of line following - high level
 enum ModeFollow { FOLLOW_CENTER, FOLLOW_LEFT, FOLLOW_RIGHT };
 ModeFollow mode_follow = FOLLOW_CENTER;
 const unsigned long follow_delay = 1000;
@@ -22,6 +26,7 @@ unsigned long follow_center_time = ULONG_MAX; // Auxiliary - timer
 
 Body body;
 
+// Realize starting behavior
 boolean starting = true; // Wait for button press once we reach starting line
 boolean start_mark = false; // We're on the starting line right now
 
@@ -36,6 +41,8 @@ void loop() {
   const unsigned long time = millis();
   
   // Process marks (sensors ll and rr)
+  
+  // Starting behavior
   if (body.sensor_ll() && body.sensor_rr()) {
     if (!start_mark) {
       // We've just reached the start mark
@@ -48,6 +55,8 @@ void loop() {
   } else {
     start_mark = false;
   }
+  
+  // Follow mode updates
   if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
     mode_follow = FOLLOW_LEFT;
     follow_center_time = time + follow_delay;
