@@ -22,7 +22,7 @@ ModeFollow mode_follow = FOLLOW_CENTER;
 ModeFollow follow_next_mode = FOLLOW_CENTER;
 unsigned long follow_next_time = ULONG_MAX;
 const unsigned long follow_attack = 200;
-const unsigned long follow_release = 1000;
+const unsigned long follow_release = 2000;
 
 Body body;
 
