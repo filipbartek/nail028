@@ -1,3 +1,5 @@
+#include <limits.h>
+
 #include <Servo.h>
 // Used in Body / Runner
 
@@ -16,7 +18,7 @@ Mode mode = WAIT;
 enum ModeFollow { FOLLOW_CENTER, FOLLOW_LEFT, FOLLOW_RIGHT };
 ModeFollow mode_follow = FOLLOW_CENTER;
 const unsigned long follow_delay = 1000;
-unsigned long follow_center_time = 0;
+unsigned long follow_center_time = ULONG_MAX; // Auxiliary - timer
 
 Body body;
 
@@ -56,6 +58,7 @@ void loop() {
   }
   if (time >= follow_center_time) {
     mode_follow = FOLLOW_CENTER;
+    follow_center_time = ULONG_MAX;
   }
   
   // Register button press
