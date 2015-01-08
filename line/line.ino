@@ -66,11 +66,11 @@ void loop() {
       follow_next_time = ULONG_MAX;
     }
   }
-  if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
+  if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER && follow_next_time == ULONG_MAX) {
     follow_next_mode = FOLLOW_LEFT;
     follow_next_time = time + follow_attack;
   }
-  if (body.sensor_rr() && !body.sensor_ll() && mode_follow == FOLLOW_CENTER) {
+  if (body.sensor_rr() && !body.sensor_ll() && mode_follow == FOLLOW_CENTER && follow_next_time == ULONG_MAX) {
     follow_next_mode = FOLLOW_RIGHT;
     follow_next_time = time + follow_attack;
   }
@@ -80,6 +80,9 @@ void loop() {
     mode = FORWARD;
     if (start_mark) {
       starting = false;
+      // Prevent the start mark from changing the follow mode
+      follow_next_mode = FOLLOW_CENTER;
+      follow_next_time = time + 200;
     }
   }
   
