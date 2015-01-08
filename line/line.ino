@@ -37,6 +37,7 @@ void loop() {
   if (body.sensor_ll() && body.sensor_rr()) {
     if (!start_mark) {
       // We've just reached the start mark
+      // (Only executed once in each lap)
       start_mark = true;
       if (starting) {
         mode = WAIT;
