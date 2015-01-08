@@ -33,37 +33,37 @@ Body::run(const long& l, const long& r) {
 }
 
 void
-Body::light(const boolean& l, const boolean& r) {
+Body::light(const boolean& l, const boolean& r) const {
   digitalWrite(pins.diod.l, l ? HIGH : LOW);
   digitalWrite(pins.diod.r, r ? HIGH : LOW);
 }
 
 boolean
-Body::button_pressed() {
+Body::button_pressed() const {
   return digitalRead(pins.button) == 0;
 }
 
 boolean
-Body::sensor_l() {
+Body::sensor_l() const {
   return digitalRead(pins.sensor.l) == 0;
 }
 
 boolean
-Body::sensor_c() {
+Body::sensor_c() const {
   return digitalRead(pins.sensor.c) == 0;
 }
 
 boolean
-Body::sensor_r() {
+Body::sensor_r() const {
   return digitalRead(pins.sensor.r) == 0;
 }
 
 boolean
-Body::sensor_ll() {
+Body::sensor_ll() const {
   return digitalRead(pins.sensor.ll) == 0;
 }
 
 boolean
-Body::sensor_rr() {
+Body::sensor_rr() const {
   return digitalRead(pins.sensor.rr) == 0;
 }
