@@ -18,8 +18,11 @@ const long velocity = 90;
 Mode mode = WAIT;
 
 ModeFollow mode_follow = FOLLOW_CENTER;
-const unsigned long follow_delay = 1000;
-unsigned long follow_center_time = ULONG_MAX; // Auxiliary - timer
+
+ModeFollow follow_next_mode = FOLLOW_CENTER;
+unsigned long follow_next_time = ULONG_MAX;
+const unsigned long follow_attack = 200;
+const unsigned long follow_release = 1000;
 
 Body body;
 
@@ -54,17 +57,22 @@ void loop() {
   }
   
   // Follow mode updates
+  if (time >= follow_next_time) {
+    mode_follow = follow_next_mode;
+    if (mode_follow != FOLLOW_CENTER) {
+      follow_next_mode = FOLLOW_CENTER;
+      follow_next_time = time + follow_release;
+    } else {
+      follow_next_time = ULONG_MAX;
+    }
+  }
   if (body.sensor_ll() && !body.sensor_rr() && mode_follow == FOLLOW_CENTER) {
-    mode_follow = FOLLOW_LEFT;
-    follow_center_time = time + follow_delay;
+    follow_next_mode = FOLLOW_LEFT;
+    follow_next_time = time + follow_attack;
   }
   if (body.sensor_rr() && !body.sensor_ll() && mode_follow == FOLLOW_CENTER) {
-    mode_follow = FOLLOW_RIGHT;
-    follow_center_time = time + follow_delay;
-  }
-  if (time >= follow_center_time) {
-    mode_follow = FOLLOW_CENTER;
-    follow_center_time = ULONG_MAX;
+    follow_next_mode = FOLLOW_RIGHT;
+    follow_next_time = time + follow_attack;
   }
   
   // Register button press
