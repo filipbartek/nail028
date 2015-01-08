@@ -6,6 +6,7 @@
 
 #include "Body.h"
 #include "Pins.h"
+#include "update_mode.h"
 
 // Configuration
 // Pins: {sensor[5], button, servo[2], diod[2]}
@@ -14,13 +15,8 @@ const Pins& pins = pins_paulie;
 
 const long velocity = 90;
 
-// Mode of movement - low level
-enum Mode { WAIT, FORWARD, LEFT, RIGHT, LEFT_STRONG, RIGHT_STRONG };
-// WAIT: Wait for button press
 Mode mode = WAIT;
 
-// Mode of line following - high level
-enum ModeFollow { FOLLOW_CENTER, FOLLOW_LEFT, FOLLOW_RIGHT };
 ModeFollow mode_follow = FOLLOW_CENTER;
 const unsigned long follow_delay = 1000;
 unsigned long follow_center_time = ULONG_MAX; // Auxiliary - timer
@@ -79,42 +75,7 @@ void loop() {
     }
   }
   
-  // Shorten names of sensor states
-  const boolean l = body.sensor_l();
-  const boolean c = body.sensor_c();
-  const boolean r = body.sensor_r();
-  
-  // Works like magic!
-  if (mode != WAIT) {
-    if (l) {
-      // May change to turning left
-      if (!r && !c) {
-        mode = LEFT_STRONG;
-      } else if (mode_follow == FOLLOW_LEFT) {
-        mode = LEFT;
-      }
-    }
-    if (r) {
-      // May change to turning right
-      if (!l && !c) {
-        mode = RIGHT_STRONG;
-      } else if (mode_follow == FOLLOW_RIGHT) {
-        mode = RIGHT;
-      }
-    }
-    if (c) {
-      // May change to going straight ahead
-      if (!l && !r) {
-        mode = FORWARD;
-      }
-      if (l && !r && mode_follow == FOLLOW_RIGHT) {
-        mode = FORWARD;
-      }
-      if (r && !l && mode_follow == FOLLOW_LEFT) {
-        mode = FORWARD;
-      }
-    }
-  }
+  update_mode(mode, mode_follow, body);
   
   // Execute mode
   switch (mode) {
